@@ -1,9 +1,10 @@
 <?php
+
 if($_POST){
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $message = $_POST['text'];
+    $message = $_POST['message'];
 
 //send email
-    mail("jobs@robin.co.il", "from" .$email, $message);
+    mail("jon88h@gmail.com", "from" .$email, $message);
 }

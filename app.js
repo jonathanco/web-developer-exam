@@ -1,38 +1,55 @@
+$(document).ready(function() {
+
+    // process the form
+    $('form').submit(function(event) {
 
 
-function validateForm() {
-
-    // Validate Title
-    var title = $("#name").val();
-    if (title=="" || title==null) { } else {
-        alert("Please enter only alphanumeric values for your Name");
-    }
-
-    // Validate Email
-    var email = $("#email").val();
-    if ((/(.+)@(.+){2,}\.(.+){2,}/.test(email)) || email=="" || email==null) { } else {
-        alert("Please enter a valid email");
-    }
-    return false;
-}
 
 
-$(function() {
-    $("#contact .btn").click(function() {
+        // get the form data
         var name = $("#name").val();
         var email = $("#email").val();
         var text = $("#message").val();
+
+        //validate fields
+        if (name.length < 2){
+            alert("Name is too short");
+            return false;
+        }
+
+        if ((/(.+)@(.+){2,}\.(.+){2,}/.test(email)) || email=="" || email==null) { } else {
+            alert("Please enter a valid email");
+            return false;
+        }
+
+        if (text.length < 2){
+            alert("Text is too short");
+            return false;
+        }
+
+
+        //create data string
         var dataString = 'name='+ name + '&email=' + email + '&message=' + text;
 
+        // process the form
         $.ajax({
-            type: "POST",
-            url: "mailer.php",
-            data: dataString,
-            success: function(){
-                $('.success').fadeIn(1000);
-            }
-        });
+            type        : 'POST',
+            url         : 'mailer.php',
+            data        :  dataString,
+            dataType    : 'json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
 
-        return false;
+                // log data to the console so we can see
+                console.log(data);
+
+
+            });
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
     });
+
 });
